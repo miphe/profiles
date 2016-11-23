@@ -1,0 +1,28 @@
+
+<script type="text/template" id="workersItem">
+  <div class="content-outer">
+    <div class="img-outer">
+      <img src="<%- obj.img %>" alt="Profile picture" />
+    </div>
+    <p class="name"><%- obj.name %></p>
+    <p class="title small-text subtle-text"><%- obj.title %></p>
+  </div>
+
+  <ul class="card-skills-list">
+    <% _.each(obj.skills, function(skill) { %>
+      <li class="card-skill skill-<%- skill.raw %>"><%- skill.label %></li>
+    <% }) %>
+  </ul>
+</script>
+
+<script type="text/template" id="workersLayout">
+  <div class="crew-title"></div>
+  <div class="crew-outer"></div>
+  <div class="crew-team"></div>
+</script>
+
+<script type="text/template" id="workersTeam">
+  <div class="img-outer">
+    <img src="<%- obj.img %>" alt="Profile image" />
+  </div>
+</script>

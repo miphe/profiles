@@ -1,11 +1,15 @@
-# Backbone seed project
+# Profiles
 
-_Short description.._
+_Simple backbone application, showcasing people, their experience and skills._
 
 ## App tech stack
 
 - BackboneJS
 - MarionetteJS
+
+Project based on, and utilizing:
+- https://github.com/miphe/backbone-seed
+- https://github.com/miphe/marionette-behaviors
 
 ## Development tools
 

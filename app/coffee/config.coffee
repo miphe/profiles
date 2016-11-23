@@ -15,5 +15,7 @@ config =
   ROOTVIEW: '#root-view'
   ROOTVIEWNAME: 'root-view'
   LAYOUT_EL_CLASS: 'page-layout'
+  APP_NAME: 'Keeper Solutions'
+  APP_TAGLINE: 'Developer profiles'
 
 module.exports = config

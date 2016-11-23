@@ -1,0 +1,31 @@
+nav
+
+  position: relative
+
+  li
+    list-style: none
+
+  &.horizontal
+    li
+      float: left
+      padding: 0 1rem
+
+      &:last-child
+        padding-right: 0
+
+      &:first-child
+        padding-left: 0
+
+  &.with-active-bar
+
+    li
+      &.is-active
+        color: $link-color
+
+    .active-indicator
+      display: block
+      height: 5px
+      background-color: $link-color
+      position: absolute
+      bottom: 0
+      +transition(width .25s, left .25s)

@@ -1,4 +1,11 @@
 
+// Helper // General
+
+%cf
+  +clearfix
+
+// Grid
+
 %content-side-padding
   padding:
     left: 2rem
@@ -12,3 +19,11 @@
 %content-box
   @extend %content-side-padding
   @extend %content-vertical-padding
+
+%content-section-centered
+  max-width: 1270px
+  margin-left: auto
+  margin-right: auto
+
+%shadow
+  +box-shadow(4px 3px 15px rgba(0,0,0,0.2))

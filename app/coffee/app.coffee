@@ -28,7 +28,8 @@ class App extends Mn.Application
   onStart: (options) ->
     @utils = new AppUtils
     @rootRegion.show @rootView
-    Backbone.history.start({ pushState: true }) if Backbone.history
+    rt = Backbone.history.start({ pushState: true }) if Backbone.history
+    @rtrs.routerInstances[0].navigate '404' unless rt
 
 # Requirements for the Marionette browser extension
 window.__agent.start Backbone, Mn if window.__agent

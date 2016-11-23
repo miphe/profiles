@@ -2,7 +2,7 @@
 _           = require 'underscore'
 
 # Routers
-StartRouter = require './start/start.router.coffee'
+PrimeRouter = require './primary.router.coffee'
 
 class Routers
 
@@ -10,7 +10,7 @@ class Routers
   # Array of router classes.
   ###
   routers: [
-    StartRouter
+    PrimeRouter
   ]
 
   ###*

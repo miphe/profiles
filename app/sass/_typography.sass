@@ -4,12 +4,30 @@
 /// @author André Drougge
 /// @todo Write placeholders
 %heading
-  color: blue
+  color: $t-accent-color
 
-html, body
+%text
+  color: $text-color
+
+%bland-text
+  color: $text-color-bland
+
+%subtle-text
+  color: $text-color-subtle
+
+%small-text
+  font-size: .9rem
+
+%text-centered
+  text-align: center
+
+html
+  font-size: $type-baseline
+
+body
   font-family: $app-font-family
   color: $text-color
-  font-size: 16px
+  font-size: 1rem
 
 // Headings
 h1
@@ -49,4 +67,17 @@ a
 
 // Text
 p
+  color: $text-color
   margin-bottom: 1.8rem
+
+.bland-text
+  @extend %bland-text
+
+.subtle-text
+  @extend %subtle-text
+
+.small-text
+  @extend %small-text
+
+.text-centered
+  @extend %text-centered

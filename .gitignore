@@ -46,3 +46,6 @@ test/scripts
 
 # Generated styles
 app/public/css
+
+# Application content (separate repository)
+app/public/content

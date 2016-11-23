@@ -6,25 +6,40 @@
 
 /// Baseline for typographical separations (margins)
 /// @type Number
-$type-baseline: 1.5rem
+$type-baseline: 1rem
+
+$t-base-color: #6F8489
+$t-accent-color: #21373C
+$t-bg-color: #eee
+$t-complement-bland-color: #A36E3E
+$t-complement-color: #894100
 
 // Typography colors
-$h1-color: #6f8489
-$h2-color: darken(#405054, 10)
-$h3-color: darken(#405054, 10)
-$h4-color: darken(#405054, 10)
-$h5-color: darken(#405054, 10)
-$h6-color: darken(#405054, 10)
+$h1-color: $t-base-color
+$h2-color: $t-accent-color
+$h3-color: $t-accent-color
+$h4-color: $t-accent-color
+$h5-color: $t-accent-color
+$h6-color: $t-accent-color
 
-$text-color: #303030
-$link-color: #162f35
-$text-color-bland: lighten(#303030, 15)
-$text-color-accent: #3973A3
+$text-color: #444
+$link-color: lighten($t-accent-color, 10)
+$text-color-bland: lighten($text-color, 10)
+$text-color-subtle: desaturate(lighten($text-color, 5), 10)
+$text-color-accent: $t-accent-color
+$text-color-complement: $t-complement-color
 
+// Tech colors
+$color-html: #E44D26
+$color-css: #2062AE
+$color-javascript: darken(#F7DF1E, 20)
+$color-angular-js: #A6120E
+$color-java: #E41937
 /// Font settings
 /// @type String
-$app-font-family: Verdana, Helvetica, Arial, sans-serif
+$app-font-family: "Arvo", Helvetica, Arial, sans-serif
 
 /// Box border color
 /// @type Color
 $box-border-color: #eee
+$box-border-color-dark: darken($box-border-color, 60)
