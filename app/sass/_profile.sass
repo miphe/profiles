@@ -44,8 +44,8 @@ $_card-width: 290px
       background-color: #eee
       +opacity(.7)
 
-    .img-outer
-      border: 4px solid green
+    .fa
+      display: block
 
   p
     @extend %bland-text
@@ -53,6 +53,16 @@ $_card-width: 290px
 
   img
     width: 150px
+
+  .fa
+    display: none
+    font-size: 80px
+    color: $positive
+    position: absolute
+    top: 45px
+    left: 50%
+    margin-left: -35px
+    z-index: 5
 
   .img-outer
     width: 150px
