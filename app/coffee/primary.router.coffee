@@ -17,6 +17,6 @@ module.exports = Rt.Base.extend
     @navigate route, { trigger: true }
 
   appRoutes:
-    '': 'index'
-    # '/(team/:ids)': 'index'
-    'about': 'about'
+    ''          : 'index'
+    'team/:ids' : 'team'
+    'about'     : 'about'

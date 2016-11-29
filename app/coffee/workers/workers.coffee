@@ -29,6 +29,16 @@ Workers.Collection = {}
 class Workers.Collection.Worker extends Backbone.Collection
   url: '../content/workers.json'
   model: Workers.Model.Worker
+  initialize: (opts) ->
+    @rawMemberIDs = opts.team or null
+
+  ###*
+  # MemberIDs processes the URL ID string, separating each ID into an Array.
+  # @returns Array of integers, member IDs.
+  ###
+  memberIDs: ->
+    return null unless @rawMemberIDs
+    _.map @rawMemberIDs.split(':'), (id) -> parseInt(id, 10)
 
 # BEHAVIOR
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,9 +74,19 @@ class Selectable extends Mn.Behavior
 Workers.View = {}
 
 class Workers.View.WorkerTitle extends Mn.View
+  initialize: (opts) ->
+    @team = if opts.team then true else false
+
   tagName: 'h2'
   className: 'prominent-heading content-section content-section-centered text-centered'
-  template: _.template('Keeper Solutions Crew')
+  template: _.template('
+    <% if(team) {%>
+      Project Team
+    <% } else { %>
+      Keeper Solutions Crew
+    <% } %>
+  ')
+  serializeData: -> team: @team
 
 class Workers.View.WorkerItem extends Mn.View
   tagName: 'li'
@@ -78,6 +98,9 @@ class Workers.View.Worker extends Mn.CollectionView
   tagName: 'ul'
   className: 'workers cf content-section-centered'
   childView: Workers.View.WorkerItem
+  filter: (cv, i, col) ->
+    return true unless col.memberIDs()
+    _.contains(col.memberIDs(), cv.get('id'))
 
 class Workers.View.TeamItem extends Mn.View
   tagName: 'li'
@@ -96,14 +119,18 @@ class Workers.View.Team extends Mn.CollectionView
     child.get('selected')
 
 class Workers.View.WorkerLayout extends Mn.View
+
+  initialize: (opts) ->
+    @team = if opts.team? then true else false
+
   tagName: 'section'
   template: tpl.workersLayout
 
   onRender: ->
-    workerTitleView = new Workers.View.WorkerTitle
+    workerTitleView = new Workers.View.WorkerTitle({ team: @team })
     @showChildView 'title', workerTitleView
 
-    workerCollection = new Workers.Collection.Worker
+    workerCollection = new Workers.Collection.Worker({ team: @options.team })
     workerCollection.fetch().done ((res) ->
       workerView = new Workers.View.Worker
         collection: workerCollection

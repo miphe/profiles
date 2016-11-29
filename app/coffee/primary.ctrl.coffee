@@ -15,6 +15,8 @@ PrimeCtrl =
 
   team: (ids) ->
     console.log 'PrimeCtrl:team', ids
+    workersLayout = new Workers.View.WorkerLayout({ team: ids })
+    Radio.channel('app').trigger 'show:view', 'main', workersLayout
 
   about: ->
     console.log 'PrimeCtrl:about'
