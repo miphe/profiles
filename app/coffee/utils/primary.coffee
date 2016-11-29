@@ -74,20 +74,28 @@ class WithActiveBar extends Mn.Behavior
 ###
 class PrimaryNavItem extends Mn.Behavior
   initialize: ->
-    r = @view.options.model.get('route')
-    Radio.channel('navigate').on r, @handleRoute, @
+    Radio.channel('navigate').on @getRoute(), @handleRoute, @
 
   events:
     'click @ui.link': 'navigate'
 
   ###*
+  # Get this item's associated route.
+  # @returns String, This model's 'route' attribute
+  ###
+  getRoute: ->
+    @view.options.model.get('route')
+
+  ###*
   # Fires a route event on the 'navigate' channel
-  # which will cause a Backbone route to occur.
   ###
   navigate: (e) ->
     e.preventDefault()
-    r = @view.options.model.get('route')
-    Radio.channel('navigate').trigger r
+    Radio.channel('navigate').trigger @getRoute()
+
+  onAttach: ->
+    # console.log 'onattach', @getRoute()
+    # console.log Backbone.history, Backbone.history.getFragment()
 
   handleRoute: ->
     @view.trigger 'activate:item', @view
