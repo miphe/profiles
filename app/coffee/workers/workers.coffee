@@ -21,6 +21,9 @@ class Workers.Model.Worker extends Backbone.Model
     skills: []
     selected: false
 
+class Workers.Model.WorkerTitle extends Backbone.Model
+  url: '../content/general.json'
+
 # COLLECTION
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -79,14 +82,11 @@ class Workers.View.WorkerTitle extends Mn.View
 
   tagName: 'h2'
   className: 'prominent-heading content-section content-section-centered text-centered'
-  template: _.template('
-    <% if(team) {%>
-      Project Team
-    <% } else { %>
-      Keeper Solutions Crew
-    <% } %>
-  ')
-  serializeData: -> team: @team
+  template: tpl.workersTitle
+  serializeData: ->
+    isTeam: @team
+    workers: @model.get('workers')
+    team: @model.get('team')
 
 class Workers.View.WorkerItem extends Mn.View
   tagName: 'li'
@@ -127,8 +127,14 @@ class Workers.View.WorkerLayout extends Mn.View
   template: tpl.workersLayout
 
   onRender: ->
-    workerTitleView = new Workers.View.WorkerTitle({ team: @team })
-    @showChildView 'title', workerTitleView
+    workerTitleModel = new Workers.Model.WorkerTitle
+    workerTitleModel.fetch().done ((res) ->
+      workerTitleView = new Workers.View.WorkerTitle
+        model: workerTitleModel
+        team: @team
+
+      @showChildView 'title', workerTitleView
+    ).bind(@)
 
     workerCollection = new Workers.Collection.Worker({ team: @options.team })
     workerCollection.fetch().done ((res) ->

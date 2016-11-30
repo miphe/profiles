@@ -27,3 +27,11 @@
     <img src="<%- obj.img %>" alt="Profile image" />
   </div>
 </script>
+
+<script type="text/template" id="workersTitle">
+  <% if(obj.isTeam) { %>
+    <%- obj.team.title %>
+  <% } else { %>
+    <%- obj.workers.title %>
+  <% } %>
+</script>
