@@ -1,0 +1,232 @@
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Buttons
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$button-radius: 4px
+$button-font-size-small: .7rem
+$button-font-size-medium: .8rem
+$button-font-size-large: 1rem
+
+$accent-color: $t-accent-color
+$secondary-btn-bg: $t-base-color
+$tertiary-btn-bg: $t-bg-color
+
+=disabled-button($bg, $clr)
+  background-color: $bg
+  color: $clr
+
+  &:hover
+    cursor: not-allowed
+
+/** Focused-button: Example usage
+  * +focused-button(azure, (top-bottom: 10, left-right: 15))
+  * +focused-button(azure, (top-bottom: 9,  left-right: 14, 1))
+  */
+
+=focused-button($clr: false, $padding-map: false)
+  $_focused-button-border-correction: 0
+
+  @if $clr
+    border-color: $clr
+
+  @if $padding-map
+    @if map-get($padding-map, correction)
+      $_focused-button-border-correction: map-get($padding-map, correction)
+
+    border:
+      width: 2px
+      style: solid
+
+    padding:
+      top:    map-get($padding-map, top-bottom) - 2px + $_focused-button-border-correction
+      bottom: map-get($padding-map, top-bottom) - 2px + $_focused-button-border-correction
+      left:   map-get($padding-map, left-right) - 2px + $_focused-button-border-correction
+      right:  map-get($padding-map, left-right) - 2px + $_focused-button-border-correction
+
+// @ Button sizes
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+%button
+  display: inline-block
+  border: medium none
+  border-radius: $button-radius
+  cursor: pointer
+  text-transform: uppercase
+  box-sizing: border-box
+  font-weight: 600
+
+  &:focus
+    outline: none
+
+  i.fa
+    margin-right: 7px
+
+%small-button
+  font-size: $button-font-size-small
+  padding: 4px 10px
+
+  &:focus
+    +focused-button(false, (top-bottom: 4, left-right: 10))
+
+%small-border-button
+  @extend %small-button
+  padding: 3px 9px
+  border-width: 1px
+
+  &:focus
+    +focused-button(false, (top-bottom: 3, left-right: 9, correction: 1))
+
+%medium-button
+  font-size: $button-font-size-medium
+  padding: 8px 15px
+
+  &:focus
+    +focused-button(false, (top-bottom: 8, left-right: 15))
+
+%medium-border-button
+  @extend %medium-button
+  padding: 7px 14px
+  border-width: 1px
+
+  &:focus
+    +focused-button(false, (top-bottom: 7, left-right: 14, correction: 1))
+
+%large-button
+  font-size: $button-font-size-large
+  font-weight: 400
+  padding: 10px 15px
+
+  &:focus
+    +focused-button(false, (top-bottom: 10, left-right: 15))
+
+  .t-magnified &
+    height: 63px
+    padding: 22px 40px
+
+%large-border-button
+  @extend %large-button
+  padding: 9px 14px
+  border-width: 1px
+
+  &:focus
+    +focused-button(false, (top-bottom: 9, left-right: 14, correction: 1))
+
+// @ Button themes
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+%primary-button
+  $_primary-button-disabled-bg: desaturate(lighten($accent-color, 25), 40)
+
+  background-color: $accent-color
+  color: white
+
+  &:hover
+    background-color: darken($accent-color, 2)
+
+  &:focus
+    +focused-button(darken($accent-color, 15))
+
+  &.is-disabled
+    +disabled-button($_primary-button-disabled-bg, lighten($_primary-button-disabled-bg, 30))
+
+%secondary-button
+  font-weight: normal
+  color: white
+  background-color: $secondary-btn-bg
+
+  &:focus
+    +focused-button(darken($secondary-btn-bg, 15))
+
+  &:hover
+    background-color: darken($secondary-btn-bg, 7)
+
+  &.is-disabled
+    +disabled-button(lighten($secondary-btn-bg, 20), lighten($secondary-btn-bg, 45))
+
+  .t-inverted &
+    background-color: darken($secondary-btn-bg, 5)
+
+    &:hover
+      background-color: darken($secondary-btn-bg, 2)
+
+%tertiary-button
+  font-weight: normal
+  color: $text-color
+  background-color: white
+  border:
+    color: darken($tertiary-btn-bg, 5)
+    style: solid
+
+  &:focus
+    +focused-button(darken($tertiary-btn-bg, 10))
+
+  &:hover
+    background-color: darken(white, 5)
+
+  &.is-disabled
+    +disabled-button(#fefefe, #eaeaea)
+    text-shadow: -1px -1px 0 #bbb
+
+// @ Button framework
+// (rendering area)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.btn
+  @extend %button
+
+.btn-sm
+  @extend %small-button
+
+.btn-md
+  @extend %medium-button
+
+.btn-lg
+  @extend %large-button
+
+.btn-primary
+  @extend %primary-button
+
+.btn-secondary
+  @extend %secondary-button
+
+.btn-tertiary
+  @extend %tertiary-button
+
+.btn-full
+  text-align: center
+  display: inline-block
+  width: 100%
+
+.btn-centered
+  display: block
+  margin:
+    left: auto
+    right: auto
+
+
+// Compound solutions
+// Where compinations between layout (size) and
+// style theme creates unique styles.
+.btn-sm.btn-tertiary
+  @extend %small-border-button
+
+.btn-md.btn-tertiary
+  @extend %medium-border-button
+
+.btn-lg.btn-tertiary
+  @extend %large-border-button
+
+// @ Button animations and icons
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
++keyframes(spin)
+  from
+    +transform(rotate(0deg))
+  to
+    +transform(rotate(360deg))
+
+i.fa-spinner:not(.is-hidden)
+  +animation(spin 1800ms infinite linear)

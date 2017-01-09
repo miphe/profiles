@@ -2,6 +2,8 @@
 Backbone = require 'backbone'
 Mn       = require 'backbone.marionette'
 _        = require 'underscore'
+Radio =    require 'backbone.radio'
+Btn      = require '../components/ui-buttons.coffee'
 tpl      = require './templates/workers.html'
 
 Workers = {}
@@ -34,6 +36,7 @@ class Workers.Collection.Worker extends Backbone.Collection
   model: Workers.Model.Worker
   initialize: (opts) ->
     @rawMemberIDs = opts.team or null
+    @team = Boolean(opts.team)
 
   ###*
   # MemberIDs processes the URL ID string, separating each ID into an Array.
@@ -88,16 +91,27 @@ class Workers.View.WorkerTitle extends Mn.View
     workers: @model.get('workers')
     team: @model.get('team')
 
-class Workers.View.WorkerItem extends Mn.View
+class Workers.View.WorkerItemSelectable extends Mn.View
   tagName: 'li'
   className: 'profile-card'
   template: tpl.workersItem
   behaviors: [Selectable]
 
+class Workers.View.WorkerItemDetails extends Mn.View
+  tagName: 'li'
+  className: 'profile-card'
+  template: tpl.workersItem
+  # TODO: write behavior for showing detailed profile
+  # behaviors: []
+
 class Workers.View.Worker extends Mn.CollectionView
   tagName: 'ul'
   className: 'workers cf content-section-centered'
-  childView: Workers.View.WorkerItem
+
+  childView: ->
+    return Workers.View.WorkerItemSelectable unless @collection.team
+    return Workers.View.WorkerItemDetails if @collection.team
+
   filter: (cv, i, col) ->
     return true unless col.memberIDs()
     _.contains(col.memberIDs(), cv.get('id'))
@@ -111,12 +125,21 @@ class Workers.View.Team extends Mn.CollectionView
 
   initialize: ->
     @listenTo @collection, 'all', @render
+    @listenTo @collection, 'all', @broadcast
 
   tagName: 'ul'
   className: 'team-list'
   childView: Workers.View.TeamItem
+
   filter: (child, index, collection) ->
     child.get('selected')
+
+  broadcast: (e, item) ->
+    len = @collection.filter((worker) -> worker.get('selected')).length
+    if len > 0
+      Radio.channel('app').trigger('valid-team-selected')
+    else
+      Radio.channel('app').trigger('invalid-team-selected')
 
 class Workers.View.WorkerLayout extends Mn.View
 
@@ -138,15 +161,20 @@ class Workers.View.WorkerLayout extends Mn.View
 
     workerCollection = new Workers.Collection.Worker({ team: @options.team })
     workerCollection.fetch().done ((res) ->
+
       workerView = new Workers.View.Worker
         collection: workerCollection
-
       @showChildView 'crew', workerView
 
       teamView = new Workers.View.Team
         collection: workerCollection
-
       @showChildView 'team', teamView
+
+      teamButton = new Btn.View.Button
+        collection: workerCollection
+        text: 'View Team'
+        className: 'btn btn-secondary btn-lg btn-centered is-hidden team-list-button'
+      @showChildView 'teamBtn', teamButton
 
       ).bind(@)
 
@@ -154,5 +182,6 @@ class Workers.View.WorkerLayout extends Mn.View
     title: '.crew-title'
     crew: '.crew-outer'
     team: '.crew-team'
+    teamBtn: '.crew-team-button'
 
 module.exports = Workers
